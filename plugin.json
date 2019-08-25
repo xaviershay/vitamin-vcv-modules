@@ -1,15 +1,15 @@
 {
-  "slug": "TestModules",
-  "name": "TestModules",
+  "slug": "xavier-modules",
+  "name": "Xavier's Modules",
   "version": "1.0.0",
-  "license": "MIT",
-  "brand": "TestModules",
+  "license": "BlueOak-1.0.0",
+  "brand": "Xavier's Modules",
   "author": "Xavier Shay",
   "authorEmail": "contact@xaviershay.com",
   "authorUrl": "https://xaviershay.com",
   "pluginUrl": "",
   "manualUrl": "",
-  "sourceUrl": "",
+  "sourceUrl": "https://github.com/xaviershay/vcv-modules",
   "donateUrl": "",
   "modules": [
     {
