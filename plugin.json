@@ -1,0 +1,28 @@
+{
+  "slug": "TestModules",
+  "name": "TestModules",
+  "version": "1.0.0",
+  "license": "MIT",
+  "brand": "TestModules",
+  "author": "Xavier Shay",
+  "authorEmail": "contact@xaviershay.com",
+  "authorUrl": "https://xaviershay.com",
+  "pluginUrl": "",
+  "manualUrl": "",
+  "sourceUrl": "",
+  "donateUrl": "",
+  "modules": [
+    {
+      "slug": "MyModule",
+      "name": "MyModule",
+      "description": "",
+      "tags": []
+    },
+    {
+      "slug": "MyModule2",
+      "name": "MyModule2",
+      "description": "",
+      "tags": []
+    }
+  ]
+}
