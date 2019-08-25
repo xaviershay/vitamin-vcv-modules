@@ -13,16 +13,13 @@
   "donateUrl": "",
   "modules": [
     {
-      "slug": "MyModule",
-      "name": "MyModule",
-      "description": "",
-      "tags": []
-    },
-    {
-      "slug": "MyModule2",
-      "name": "MyModule2",
-      "description": "",
-      "tags": []
+      "slug": "Bypass",
+      "name": "Bypass",
+      "description": "10-Channel Effect Bypass",
+      "tags": [
+        "Utility",
+        "Polyphonic"
+      ]
     }
   ]
 }
