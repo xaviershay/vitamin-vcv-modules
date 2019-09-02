@@ -22,9 +22,13 @@ struct Pan : Module {
 
 	Pan() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(PAN_PARAM, 0.f, 1.f, 0.5f, "L/R Pan", "", 0.f, 2.0f, -1.0f);
+		configParam(PAN_PARAM, 0.f, 1.0f, 0.5f, "L/R Pan"); //, "", 0.f, 2.0f, -1.0f);
 	}
 
+  // TODO: Use simd instructions (see Fundamental VCA for example)
+  // TODO: Lookup table for sin
+  // Applies constant power pan law, see section 2.2:
+  // http://www.cs.cmu.edu/~music/icm-online/readings/panlaws/panlaws.pdf
 	void process(const ProcessArgs &args) override {
 		float in[16] = {};
 		float l_out[16] = {};
@@ -45,7 +49,6 @@ struct Pan : Module {
 
       float knobCv = params[PAN_PARAM].getValue();
 
-      // TODO: Apply pan law
       for (int c = 0; c < channels; c++) {
         float panAmount;
 
@@ -55,8 +58,10 @@ struct Pan : Module {
           panAmount = knobCv;
         }
 
-        l_out[c] = in[c] * (1.0f - panAmount);
-        r_out[c] = in[c] * panAmount;
+        float lPan = cosf(panAmount * M_PI / 2);
+        float rPan = sinf(panAmount * M_PI / 2);
+        l_out[c] = in[c] * lPan;
+        r_out[c] = in[c] * rPan;
       }
 
       if (outputs[LEFT_OUTPUT].isConnected()) {
