@@ -52,10 +52,15 @@ struct Pan : Module {
       for (int c = 0; c < channels; c++) {
         float panAmount;
 
-        if (c < cvChannels) {
+        if (cvChannels == 0) {
+          panAmount = knobCv;
+        } else if (c < cvChannels) {
           panAmount = cv[c] / 10.0f;
         } else {
-          panAmount = knobCv;
+          // You might expect this to default to either current knob value or
+          // center pan, but to comply with VCV Voltage standards (Polyphony:
+          // insufficient channels behaviour) we need to treat as zero voltage.
+          panAmount = 0.0f;
         }
 
         float lPan = sinf(panAmount * M_PI / 2 + M_PI / 2); // == cos(x)
