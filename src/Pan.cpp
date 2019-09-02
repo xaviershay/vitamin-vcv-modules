@@ -58,7 +58,7 @@ struct Pan : Module {
           panAmount = knobCv;
         }
 
-        float lPan = cosf(panAmount * M_PI / 2);
+        float lPan = sinf(panAmount * M_PI / 2 + M_PI / 2); // == cos(x)
         float rPan = sinf(panAmount * M_PI / 2);
         l_out[c] = in[c] * lPan;
         r_out[c] = in[c] * rPan;
