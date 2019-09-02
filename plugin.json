@@ -20,6 +20,16 @@
         "Utility",
         "Polyphonic"
       ]
+    },
+    {
+      "slug": "Pan",
+      "name": "Pan",
+      "description": "Pan a polyphonic mono input using constant power law to maintain overall volume.",
+      "tags": [
+        "pan",
+        "mixer",
+        "polyphonic"
+      ]
     }
   ]
 }
