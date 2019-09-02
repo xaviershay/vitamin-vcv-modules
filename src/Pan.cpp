@@ -22,10 +22,56 @@ struct Pan : Module {
 
 	Pan() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(PAN_PARAM, 0.f, 1.f, 0.f, "");
+		configParam(PAN_PARAM, 0.f, 1.f, 0.5f, "L/R Pan", "", 0.f, 2.0f, -1.0f);
 	}
 
 	void process(const ProcessArgs &args) override {
+		float in[16] = {};
+		float l_out[16] = {};
+		float r_out[16] = {};
+    float cv[16] = {};
+
+    int channels = 1;
+    int cvChannels = 0;
+
+    if (inputs[IN_INPUT].isConnected()) {
+      channels = inputs[IN_INPUT].getChannels();
+      inputs[IN_INPUT].readVoltages(in);
+
+      if (inputs[CV_INPUT].isConnected()) {
+        cvChannels = inputs[CV_INPUT].getChannels();
+        inputs[CV_INPUT].readVoltages(cv);
+      };
+
+      float knobCv = params[PAN_PARAM].getValue();
+
+      // TODO: Apply pan law
+      for (int c = 0; c < channels; c++) {
+        float panAmount;
+
+        if (c < cvChannels) {
+          panAmount = cv[c] / 10.0f;
+        } else {
+          panAmount = knobCv;
+        }
+
+        l_out[c] = in[c] * (1.0f - panAmount);
+        r_out[c] = in[c] * panAmount;
+      }
+
+      if (outputs[LEFT_OUTPUT].isConnected()) {
+        outputs[LEFT_OUTPUT].setChannels(channels);
+        outputs[LEFT_OUTPUT].writeVoltages(l_out);
+      }
+
+      if (outputs[RIGHT_OUTPUT].isConnected()) {
+        outputs[RIGHT_OUTPUT].setChannels(channels);
+        outputs[RIGHT_OUTPUT].writeVoltages(r_out);
+      }
+    } else {
+      outputs[LEFT_OUTPUT].clearVoltages();
+      outputs[RIGHT_OUTPUT].clearVoltages();
+    }
 	}
 };
 
