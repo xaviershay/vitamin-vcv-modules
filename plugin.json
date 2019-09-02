@@ -20,6 +20,16 @@
         "Utility",
         "Polyphonic"
       ]
+    },
+    {
+      "slug": "Pan",
+      "name": "Pan",
+      "description": "Pan a mono input",
+      "tags": [
+        "pan",
+        "mixer",
+        "polyphonic"
+      ]
     }
   ]
 }
