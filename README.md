@@ -10,6 +10,13 @@ send.
 
 ![Bypass Screenshot](https://raw.githubusercontent.com/xaviershay/vcv-modules/master/images/bypass.png)
 
+## Vitamin P (Pan)
+
+Undocumented.
+
 # Development
 
-Font is http://www.latofonts.com/
+   export RACK_DIR=../path/to/rack
+   make && make install
+
+Font is http://www.latofonts.com/ or lakmus
