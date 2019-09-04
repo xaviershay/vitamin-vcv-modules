@@ -12,7 +12,16 @@ send.
 
 ## Vitamin P (Pan)
 
-Undocumented.
+Pan a polyphonic mono input using constant power law to maintain overall
+volume.
+
+`CV` is also polyphonic. It's voltages are summed with the knob value, so for
+full range of control either:
+
+* set the knob to left position with a unipolar input 0V to 10V.
+* set the knob to middle position with a bipolar input -5V to 5V.
+
+![Vitamin P Screenshot](https://raw.githubusercontent.com/xaviershay/vcv-modules/master/images/vitamin-p.png)
 
 # Development
 
