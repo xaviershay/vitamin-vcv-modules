@@ -25,7 +25,7 @@ full range of control either:
 
 # Development
 
-   export RACK_DIR=../path/to/rack
-   make && make install
+    export RACK_DIR=../path/to/rack
+    make && make install
 
 Font is http://www.latofonts.com/ or lakmus
