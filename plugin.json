@@ -24,7 +24,7 @@
     {
       "slug": "Pan",
       "name": "Pan",
-      "description": "Pan a mono input",
+      "description": "Pan a polyphonic mono input using constant power law to maintain overall volume.",
       "tags": [
         "pan",
         "mixer",

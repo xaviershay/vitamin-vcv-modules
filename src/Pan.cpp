@@ -1,6 +1,10 @@
 #include "plugin.hpp"
 
-
+// Polyphonic panning module that applies constant power pan law.
+//
+// Reference:
+//
+// * Section 2.2 of http://www.cs.cmu.edu/~music/icm-online/readings/panlaws/panlaws.pdf
 struct Pan : Module {
 	enum ParamIds {
 		PAN_PARAM,
@@ -22,61 +26,38 @@ struct Pan : Module {
 
 	Pan() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(PAN_PARAM, 0.f, 1.0f, 0.5f, "L/R Pan"); //, "", 0.f, 2.0f, -1.0f);
+		configParam(PAN_PARAM, -5.f, 5.f, 0.f, "L/R Pan", "%", 0, 20);
 	}
 
-  // TODO: Use simd instructions (see Fundamental VCA for example)
-  // TODO: Lookup table for sin
-  // Applies constant power pan law, see section 2.2:
-  // http://www.cs.cmu.edu/~music/icm-online/readings/panlaws/panlaws.pdf
 	void process(const ProcessArgs &args) override {
-		float in[16] = {};
-		float l_out[16] = {};
-		float r_out[16] = {};
-    float cv[16] = {};
-
-    int channels = 1;
-    int cvChannels = 0;
+    simd::float_4 in[4];
+    simd::float_4 cv[4];
+    simd::float_4 left[4];
+    simd::float_4 right[4];
 
     if (inputs[IN_INPUT].isConnected()) {
-      channels = inputs[IN_INPUT].getChannels();
-      inputs[IN_INPUT].readVoltages(in);
-
-      if (inputs[CV_INPUT].isConnected()) {
-        cvChannels = inputs[CV_INPUT].getChannels();
-        inputs[CV_INPUT].readVoltages(cv);
-      };
-
+      int channels = inputs[IN_INPUT].getChannels();
       float knobCv = params[PAN_PARAM].getValue();
 
-      for (int c = 0; c < channels; c++) {
-        float panAmount;
+      for (int c = 0; c < channels; c += 4) {
+        int i = c / 4;
 
-        if (cvChannels == 0) {
-          panAmount = knobCv;
-        } else if (c < cvChannels) {
-          panAmount = cv[c] / 10.0f;
-        } else {
-          // You might expect this to default to either current knob value or
-          // center pan, but to comply with VCV Voltage standards (Polyphony:
-          // insufficient channels behaviour) we need to treat as zero voltage.
-          panAmount = 0.0f;
-        }
+        in[i] = simd::float_4::load(inputs[IN_INPUT].getVoltages(c));
+        cv[i] = simd::float_4::load(inputs[CV_INPUT].getVoltages(c));
 
-        float lPan = sinf(panAmount * M_PI / 2 + M_PI / 2); // == cos(x)
-        float rPan = sinf(panAmount * M_PI / 2);
-        l_out[c] = in[c] * lPan;
-        r_out[c] = in[c] * rPan;
-      }
+        cv[i] = simd::clamp(
+          (cv[i] + knobCv + 5.0f) / 10.0f * M_PI / 2,
+          0.0,
+          M_PI/2
+        );
 
-      if (outputs[LEFT_OUTPUT].isConnected()) {
+        left[i]  = in[i] * simd::cos(cv[i]);
+        right[i] = in[i] * simd::sin(cv[i]);
+
+        outputs[LEFT_OUTPUT].setVoltageSimd(left[i], c);
+        outputs[RIGHT_OUTPUT].setVoltageSimd(right[i], c);
         outputs[LEFT_OUTPUT].setChannels(channels);
-        outputs[LEFT_OUTPUT].writeVoltages(l_out);
-      }
-
-      if (outputs[RIGHT_OUTPUT].isConnected()) {
         outputs[RIGHT_OUTPUT].setChannels(channels);
-        outputs[RIGHT_OUTPUT].writeVoltages(r_out);
       }
     } else {
       outputs[LEFT_OUTPUT].clearVoltages();
@@ -113,6 +94,5 @@ struct PanWidget : ModuleWidget {
 		addOutput(createOutput<PJ301MPort>(mm2px(Vec(14.173, 96.819)), module, Pan::RIGHT_OUTPUT));
 	}
 };
-
 
 Model *modelPan = createModel<Pan, PanWidget>("Pan");
