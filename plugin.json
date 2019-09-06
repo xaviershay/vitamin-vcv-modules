@@ -1,9 +1,9 @@
 {
-  "slug": "xavier-modules",
-  "name": "Xavier's Modules",
+  "slug": "vitamin",
+  "name": "Vitamin",
   "version": "1.0.0",
   "license": "BlueOak-1.0.0",
-  "brand": "Xavier's Modules",
+  "brand": "Vitamin",
   "author": "Xavier Shay",
   "authorEmail": "contact@xaviershay.com",
   "authorUrl": "https://xaviershay.com",
@@ -14,16 +14,16 @@
   "modules": [
     {
       "slug": "Bypass",
-      "name": "Bypass",
-      "description": "10-Channel Effect Bypass",
+      "name": "B (Effect Bypass)",
+      "description": "8-Channel effect bypass.",
       "tags": [
-        "Utility",
-        "Polyphonic"
+        "utility",
+        "polyphonic"
       ]
     },
     {
       "slug": "Pan",
-      "name": "Pan",
+      "name": "P (Pan)",
       "description": "Pan a polyphonic mono input using constant power law to maintain overall volume.",
       "tags": [
         "pan",

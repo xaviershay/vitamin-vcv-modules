@@ -71,7 +71,7 @@ struct RetroKnob : SVGKnob {
 		box.size = Vec(20, 20);
 		minAngle = -0.75*M_PI;
 		maxAngle = 0.75*M_PI;
-		setSVG(APP->window->loadSvg(asset::plugin(pluginInstance, "res/SmallKnob.svg")));
+		setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/SmallKnob.svg")));
 	}
 };
 
