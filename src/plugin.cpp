@@ -9,5 +9,6 @@ void init(Plugin *p) {
 
 	// Add modules here
 	p->addModel(modelBypass);
+	p->addModel(modelBypass2);
 	p->addModel(modelPan);
 }

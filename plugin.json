@@ -17,8 +17,8 @@
       "name": "Bypass",
       "description": "10-Channel Effect Bypass",
       "tags": [
-        "Utility",
-        "Polyphonic"
+        "utility",
+        "polyphonic"
       ]
     },
     {
@@ -30,6 +30,12 @@
         "mixer",
         "polyphonic"
       ]
+    },
+    {
+      "slug": "Bypass2",
+      "name": "Bypass2",
+      "description": "Blah",
+      "tags": ["polyphonic"]
     }
   ]
 }
