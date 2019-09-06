@@ -10,7 +10,7 @@ Component = Struct.new(:name, :klass, :x, :y) do
   enum #{self.name}Ids {
 #{components.select {|x| self === x }.map {|x| "    %s,\n" % x.name }.join}
     NUM_#{self.name.upcase}S
-  }
+  };
     CPP
   end
 end
@@ -53,20 +53,25 @@ class Param < Component
   end
 
   def to_config_cpp
-    %|configParam(%s, 0.f, 1.f, 0.f, "")| % name
+    %|configParam(%s, 0.f, 1.f, 0.f, "");| % name
   end
 
   def self.namespace; "PARAM"; end
 end
 
 
-data = File.read("res/Bypass2.svg")
 
-doc = Nokogiri::XML(data)
+module_name = ARGV[0] || "First argument must be module name"
+
+svg_file = "res/#{module_name}.svg"
+cpp_file = "src/#{module_name}.cpp"
+
+svg_data = File.read(svg_file)
+
+doc = Nokogiri::XML(svg_data)
 
 layer = doc.at_xpath("//svg:g[@inkscape:label='components']") || raise("No components layer found")
 
-module_name = "Bypass2"
 components = []
 
 ALL_COMPONENT_TYPES = [Input, Output, Param, Light]
@@ -134,6 +139,8 @@ struct Bypass2Widget : ModuleWidget {
     /* END GENERATED: Add Components */
   }
 };
+
+Model *model#{module_name} = createModel<#{module_name}, #{module_name}Widget>("#{module_name}");
 CPP
 
 def replace_generated(src, label, &block)
@@ -149,15 +156,30 @@ def replace_generated(src, label, &block)
   lines.join
 end
 
-def update_src(src, components)
+def update_src(module_name, src, components)
   src = replace_generated(src, "Enums") do |existing|
     ALL_COMPONENT_TYPES.map do |type|
       type.to_enum_cpp(components)
     end.join("\n")
   end
+
   src = replace_generated(src, "Add Components") do |existing|
-    components.map {|c| "    %s\n" % c.to_cpp("Bypass2") }.join
+    components.map {|c| "    %s\n" % c.to_cpp(module_name) }.join
+  end
+
+  src = replace_generated(src, "Param Config") do |existing|
+    existing.join +
+      components.select {|x| Param === x }.map do |c|
+        next if existing.detect {|x| x.include?(%|configParam(%s| % c.name) }
+
+        "    %s\n" % c.to_config_cpp
+      end.compact.join
   end
 end
 
-puts update_src(src, components)
+unless File.exists?(cpp_file)
+  File.write(cpp_file, src)
+end
+
+src = File.read(cpp_file)
+File.write(cpp_file, update_src(module_name, src, components))
