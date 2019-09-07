@@ -1,8 +1,8 @@
 on: push
 name: Build Latest
 jobs:
-  fetchSubmodules:
-    name: Fetch Submodules
+  setup:
+    name: "Fetch Dependencies"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
@@ -12,10 +12,25 @@ jobs:
       uses: ./.github/actions/rack_sdk
       env:
         RACK_SDK_VERSION: 1.1.4
+  buildLinux:
+    needs: [setup]
+    name: Build Linux
+    runs-on: ubuntu-latest
+    steps:
     - name: Build Linux
       uses: ./.github/actions/build_linux
+  buildWindows:
+    needs: [setup]
+    name: Build Windows
+    runs-on: ubuntu-latest
+    steps:
     - name: Build Windows
       uses: ./.github/actions/build_win
+  uploadRelease:
+    needs: [buildLinux, buildWindows]
+    name: Upload Release
+    runs-on: ubuntu-latest
+    steps:
     - name: Tag Head as Latest
       uses: ./.github/actions/update_tag
       env:
@@ -34,9 +49,13 @@ jobs:
         ASSET_PATH: dist/vitamin-1.0.0-win.zip
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         RELEASE_TAG: latest
-    - name: Upload OSX Release
-      uses: ./.github/actions/update_asset
-      env:
-        ASSET_PATH: dist/vitamin-1.0.0-osx.zip
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        RELEASE_TAG: latest
+
+# OSX stuff, TODO
+#    - name: Build OSX
+#      uses: ./.github/actions/build_osx
+#    - name: Upload OSX Release
+#      uses: ./.github/actions/update_asset
+#      env:
+#        ASSET_PATH: dist/vitamin-1.0.0-osx.zip
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        RELEASE_TAG: latest
