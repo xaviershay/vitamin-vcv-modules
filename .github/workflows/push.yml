@@ -1,0 +1,36 @@
+on: push
+name: Build Latest
+jobs:
+  fetchSubmodules:
+    name: Fetch Submodules
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Fetch Submodules
+      uses: ./.github/actions/submodules
+    - name: Fetch Rack SDK
+      uses: ./.github/actions/rack_sdk
+      env:
+        RACK_SDK_VERSION: 1.1.4
+    - name: Build Windows
+      uses: ./.github/actions/build_win
+    - name: Build Linux
+      uses: ./.github/actions/build_linux
+    - name: Tag Head as Latest
+      uses: ./.github/actions/update_tag
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        REF: refs/heads/master
+        TAG: latest
+    - name: Upload Linux Release
+      uses: ./.github/actions/update_asset
+      env:
+        ASSET_PATH: plugins/xavier-modules-1.0.0-lin.zip
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        RELEASE_TAG: latest
+    - name: Upload Windows Release
+      uses: ./.github/actions/update_asset
+      env:
+        ASSET_PATH: plugins/xavier-modules-1.0.0-win.zip
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        RELEASE_TAG: latest
