@@ -1,36 +1,15 @@
 on: push
 name: Build Latest
 jobs:
-  setup:
-    name: "Fetch Dependencies"
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - name: Fetch Submodules
-      uses: ./.github/actions/submodules
-    - name: Fetch Rack SDK
-      uses: ./.github/actions/rack_sdk
-      env:
-        RACK_SDK_VERSION: 1.1.4
   buildLinux:
-    needs: [setup]
     name: Build Linux
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@master
     - name: Build Linux
       uses: ./.github/actions/build_linux
-  buildWindows:
-    needs: [setup]
-    name: Build Windows
-    runs-on: ubuntu-latest
-    steps:
-    - name: Build Windows
-      uses: ./.github/actions/build_win
-  uploadRelease:
-    needs: [buildLinux, buildWindows]
-    name: Upload Release
-    runs-on: ubuntu-latest
-    steps:
+      env:
+        RACK_SDK_VERSION: 1.1.4
     - name: Tag Head as Latest
       uses: ./.github/actions/update_tag
       env:
@@ -43,13 +22,31 @@ jobs:
         ASSET_PATH: dist/vitamin-1.0.0-lin.zip
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         RELEASE_TAG: latest
-    - name: Upload Windows Release
-      uses: ./.github/actions/update_asset
-      env:
-        ASSET_PATH: dist/vitamin-1.0.0-win.zip
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        RELEASE_TAG: latest
-
+        #  buildWindows:
+        #    name: Build Windows
+        #    runs-on: ubuntu-latest
+        #    steps:
+        #    - uses: actions/checkout@master
+        #    - name: Fetch Submodules
+        #      uses: ./.github/actions/submodules
+        #    - name: Fetch Rack SDK
+        #      uses: ./.github/actions/rack_sdk
+        #      env:
+        #        RACK_SDK_VERSION: 1.1.4
+        #    - name: Build Windows
+        #      uses: ./.github/actions/build_win
+        #    - name: Tag Head as Latest
+        #      uses: ./.github/actions/update_tag
+        #      env:
+        #        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        #        REF: refs/heads/master
+        #        TAG: latest
+        #    - name: Upload Windows Release
+        #      uses: ./.github/actions/update_asset
+        #      env:
+        #        ASSET_PATH: dist/vitamin-1.0.0-win.zip
+        #        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        #        RELEASE_TAG: latest
 # OSX stuff, TODO
 #    - name: Build OSX
 #      uses: ./.github/actions/build_osx
