@@ -125,7 +125,13 @@ struct Bypass : Module {
       int channels = 1;
       channels = inputs[IN1+i].getChannels();
       outputs[SEND1+i].setChannels(channels);
-      outputs[OUT1+i].setChannels(channels);
+
+      if (state[i]) {
+        channels = inputs[RETURN1+i].getChannels();
+        outputs[OUT1+i].setChannels(channels);
+      } else {
+        outputs[OUT1+i].setChannels(channels);
+      }
 
       lights[LIGHT1+i].setBrightness(state[i] ? 0.9 : 0.0f);
     }
