@@ -28,7 +28,7 @@ eval $(echo "${response}" | grep -C2 "name.:.\+${FILENAME}" | grep -m 1 "id.:" |
 ASSET_ID="${id}"
 
 if [ "${ASSET_ID}" != "" ]; then
-    echo "Deleting existin asset ${ASSET_ID}"
+    echo "Deleting existing asset ${ASSET_ID}"
     curl -i \
         --fail \
         --header "Authorization: token ${GITHUB_TOKEN}" \

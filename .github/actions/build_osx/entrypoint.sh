@@ -10,4 +10,4 @@ export CXX=x86_64-apple-darwin15-clang++
 export STRIP=x86_64-apple-darwin15-strip
 
 make clean
-make install
+make dist

@@ -12,10 +12,10 @@ jobs:
       uses: ./.github/actions/rack_sdk
       env:
         RACK_SDK_VERSION: 1.1.4
-    - name: Build Windows
-      uses: ./.github/actions/build_win
     - name: Build Linux
       uses: ./.github/actions/build_linux
+    - name: Build Windows
+      uses: ./.github/actions/build_win
     - name: Tag Head as Latest
       uses: ./.github/actions/update_tag
       env:
@@ -25,12 +25,18 @@ jobs:
     - name: Upload Linux Release
       uses: ./.github/actions/update_asset
       env:
-        ASSET_PATH: plugins/xavier-modules-1.0.0-lin.zip
+        ASSET_PATH: dist/vitamin-1.0.0-lin.zip
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         RELEASE_TAG: latest
     - name: Upload Windows Release
       uses: ./.github/actions/update_asset
       env:
-        ASSET_PATH: plugins/xavier-modules-1.0.0-win.zip
+        ASSET_PATH: dist/vitamin-1.0.0-win.zip
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        RELEASE_TAG: latest
+    - name: Upload OSX Release
+      uses: ./.github/actions/update_asset
+      env:
+        ASSET_PATH: dist/vitamin-1.0.0-osx.zip
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         RELEASE_TAG: latest
