@@ -26,6 +26,7 @@ full range of control either:
 # Development
 
     export RACK_DIR=../path/to/rack
+    ruby create_module.rb Bypass # Update CPP from SVG. Better than helper.py.
     make && make install
 
 Font is lakmus.
