@@ -91,14 +91,11 @@ struct Bypass : Module {
 
   void route(int input, int output) {
 		float out[16] = {};
-		int channels = 1;
 
     if (inputs[input].isConnected()) {
-      channels = inputs[input].getChannels();
       inputs[input].readVoltages(out);
 
       if (outputs[output].isConnected()) {
-        outputs[output].setChannels(channels);
         outputs[output].writeVoltages(out);
       }
     } else {
@@ -124,6 +121,11 @@ struct Bypass : Module {
           outputs[SEND1+i].clearVoltages();
         }
       }
+
+      int channels = 1;
+      channels = inputs[IN1+i].getChannels();
+      outputs[SEND1+i].setChannels(channels);
+      outputs[OUT1+i].setChannels(channels);
 
       lights[LIGHT1+i].setBrightness(state[i] ? 0.9 : 0.0f);
     }
