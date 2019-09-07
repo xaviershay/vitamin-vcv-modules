@@ -4,9 +4,13 @@ Assorted modules for VCV Rack.
 
 ## Vitamin B (Effect Bypass)
 
-An 8-channel effect bypass. When channel is enabled, connects input to send and
+Channel effect bypass. When channel is enabled, connects input to send and
 return to output. When disabled, connects input directly to output and zeroes
 send.
+
+Features two mono lines, two stereo lines, and a single mono-to-stereo line.
+The mono-to-stereo line performs a constant power center pan to the outputs
+when bypassing, to maintain constant apparent volume.
 
 ![Vitamin B Screenshot](https://raw.githubusercontent.com/xaviershay/vcv-modules/master/images/vitamin-b.png)
 

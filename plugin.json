@@ -15,7 +15,7 @@
     {
       "slug": "Bypass",
       "name": "B (Effect Bypass)",
-      "description": "8-Channel effect bypass.",
+      "description": "Multi-channel effect bypass.",
       "tags": [
         "utility",
         "polyphonic"

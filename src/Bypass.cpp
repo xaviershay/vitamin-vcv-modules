@@ -10,7 +10,6 @@ struct Bypass : Module {
     IN5,
     IN6,
     IN7,
-    IN8,
     RETURN1,
     RETURN2,
     RETURN3,
@@ -39,7 +38,6 @@ struct Bypass : Module {
     SEND5,
     SEND6,
     SEND7,
-    SEND8,
 
   NUM_OUTPUTS
 };
@@ -48,11 +46,8 @@ struct Bypass : Module {
     BUTTON1,
     BUTTON2,
     BUTTON3,
-    BUTTON4,
     BUTTON5,
-    BUTTON6,
     BUTTON7,
-    BUTTON8,
 
   NUM_PARAMS
 };
@@ -61,11 +56,8 @@ struct Bypass : Module {
     LIGHT1,
     LIGHT2,
     LIGHT3,
-    LIGHT4,
     LIGHT5,
-    LIGHT6,
     LIGHT7,
-    LIGHT8,
 
   NUM_LIGHTS
 };
@@ -77,11 +69,8 @@ struct Bypass : Module {
     configParam(BUTTON1, 0.f, 1.f, 0.f, "Channel 1 Send");
     configParam(BUTTON2, 0.f, 1.f, 0.f, "Channel 2 Send");
     configParam(BUTTON3, 0.f, 1.f, 0.f, "Channel 3 Send");
-    configParam(BUTTON4, 0.f, 1.f, 0.f, "Channel 4 Send");
     configParam(BUTTON5, 0.f, 1.f, 0.f, "Channel 5 Send");
-    configParam(BUTTON6, 0.f, 1.f, 0.f, "Channel 6 Send");
     configParam(BUTTON7, 0.f, 1.f, 0.f, "Channel 7 Send");
-    configParam(BUTTON8, 0.f, 1.f, 0.f, "Channel 8 Send");
     /* END GENERATED: Param Config */
     onReset();
   }
@@ -89,14 +78,13 @@ struct Bypass : Module {
 	bool state[NUM_PARAMS];
 	dsp::BooleanTrigger sendTrigger[NUM_PARAMS];
 
-  void route(int input, int output) {
-		float out[16] = {};
+  void route(int input, int output, float multiplier = 1.0) {
+    if (inputs[input].isConnected() && outputs[output].isConnected()) {
+      int channels = inputs[input].getChannels();
+      for (int c = 0; c < channels; c += 4) {
+        simd::float_4 out = simd::float_4::load(inputs[input].getVoltages(c));
 
-    if (inputs[input].isConnected()) {
-      inputs[input].readVoltages(out);
-
-      if (outputs[output].isConnected()) {
-        outputs[output].writeVoltages(out);
+        outputs[output].setVoltageSimd(out * multiplier, c);
       }
     } else {
       if (outputs[output].isConnected()) {
@@ -106,15 +94,33 @@ struct Bypass : Module {
   }
 
   void process(const ProcessArgs &args) override {
+    int returnButtonMapping[8] = { 0, 1, 2, 2, 3, 3, 4, 4};
+
     for (int i = 0; i < NUM_PARAMS; i++) {
       if (sendTrigger[i].process(params[BUTTON1 + i].getValue() > 0.f))
         state[i] ^= true;
 
-      if (state[i]) {
-        route(IN1+i, SEND1+i);
+      lights[LIGHT1+i].setBrightness(state[i] ? 0.9 : 0.0f);
+    }
+
+    for (int i = 0; i < 8; i++) {
+      if (state[returnButtonMapping[i]]) {
+        if (i < 7) {
+          route(IN1+i, SEND1+i);
+        }
         route(RETURN1+i, OUT1+i);
       } else {
-        route(IN1+i, OUT1+i);
+        if (i == 6) {
+          // Mono -> Stero case
+          // 0.71 = sin(45deg)
+          // This keeps overall combined power of output signal constant.
+          route(IN1+i, OUT1+i, 0.71);
+          route(IN1+i, OUT1+i+1, 0.71);
+        } else if (i == 7) {
+          // Ignore, was handled by previous loop
+        } else {
+          route(IN1+i, OUT1+i);
+        }
 
         // Clear send
         if (outputs[SEND1+i].isConnected()) {
@@ -123,17 +129,20 @@ struct Bypass : Module {
       }
 
       int channels = 1;
-      channels = inputs[IN1+i].getChannels();
-      outputs[SEND1+i].setChannels(channels);
+      if (i < 7) {
+        channels = inputs[IN1+i].getChannels();
+        outputs[SEND1+i].setChannels(channels);
+      } else {
+        channels = inputs[IN1+6].getChannels();
+        outputs[SEND1+6].setChannels(channels);
+      }
 
-      if (state[i]) {
+      if (state[returnButtonMapping[i]]) {
         channels = inputs[RETURN1+i].getChannels();
         outputs[OUT1+i].setChannels(channels);
       } else {
         outputs[OUT1+i].setChannels(channels);
       }
-
-      lights[LIGHT1+i].setBrightness(state[i] ? 0.9 : 0.0f);
     }
   }
 
@@ -214,12 +223,9 @@ struct BypassWidget : ModuleWidget {
     /* START GENERATED - DO NOT EDIT: Add Components */
     addParam(createParamCentered<RetroButton>(mm2px(Vec(33.020000, 39.109344)), module, Bypass::BUTTON1));
     addParam(createParamCentered<RetroButton>(mm2px(Vec(33.020000, 49.843910)), module, Bypass::BUTTON2));
-    addParam(createParamCentered<RetroButton>(mm2px(Vec(33.020000, 60.578442)), module, Bypass::BUTTON3));
-    addParam(createParamCentered<RetroButton>(mm2px(Vec(33.020000, 71.312965)), module, Bypass::BUTTON4));
-    addParam(createParamCentered<RetroButton>(mm2px(Vec(33.020000, 82.047501)), module, Bypass::BUTTON5));
-    addParam(createParamCentered<RetroButton>(mm2px(Vec(33.020000, 92.782021)), module, Bypass::BUTTON6));
-    addParam(createParamCentered<RetroButton>(mm2px(Vec(33.020000, 103.516560)), module, Bypass::BUTTON7));
-    addParam(createParamCentered<RetroButton>(mm2px(Vec(33.020000, 114.251080)), module, Bypass::BUTTON8));
+    addParam(createParamCentered<RetroButton>(mm2px(Vec(32.953182, 65.945671)), module, Bypass::BUTTON3));
+    addParam(createParamCentered<RetroButton>(mm2px(Vec(32.831013, 87.414726)), module, Bypass::BUTTON5));
+    addParam(createParamCentered<RetroButton>(mm2px(Vec(32.831013, 108.883780)), module, Bypass::BUTTON7));
     addInput(createInputCentered<PJ301MPort>(mm2px(Vec(6.237754, 39.109362)), module, Bypass::IN1));
     addInput(createInputCentered<PJ301MPort>(mm2px(Vec(6.237754, 49.843886)), module, Bypass::IN2));
     addInput(createInputCentered<PJ301MPort>(mm2px(Vec(6.237754, 60.578420)), module, Bypass::IN3));
@@ -227,7 +233,6 @@ struct BypassWidget : ModuleWidget {
     addInput(createInputCentered<PJ301MPort>(mm2px(Vec(6.237754, 82.047476)), module, Bypass::IN5));
     addInput(createInputCentered<PJ301MPort>(mm2px(Vec(6.237754, 92.782001)), module, Bypass::IN6));
     addInput(createInputCentered<PJ301MPort>(mm2px(Vec(6.237754, 103.516534)), module, Bypass::IN7));
-    addInput(createInputCentered<PJ301MPort>(mm2px(Vec(6.237754, 114.251060)), module, Bypass::IN8));
     addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(56.812223, 39.109362)), module, Bypass::OUT1));
     addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(56.812223, 49.843886)), module, Bypass::OUT2));
     addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(56.812223, 60.578420)), module, Bypass::OUT3));
@@ -251,15 +256,11 @@ struct BypassWidget : ModuleWidget {
     addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(19.939704, 82.047476)), module, Bypass::SEND5));
     addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(19.939704, 92.782001)), module, Bypass::SEND6));
     addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(19.939704, 103.516534)), module, Bypass::SEND7));
-    addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(19.939704, 114.251060)), module, Bypass::SEND8));
     addChild(createLightCentered<MuteLight<RetroLight>>(mm2px(Vec(33.020000, 39.109344)), module, Bypass::LIGHT1));
     addChild(createLightCentered<MuteLight<RetroLight>>(mm2px(Vec(33.020000, 49.843910)), module, Bypass::LIGHT2));
-    addChild(createLightCentered<MuteLight<RetroLight>>(mm2px(Vec(33.020000, 60.578442)), module, Bypass::LIGHT3));
-    addChild(createLightCentered<MuteLight<RetroLight>>(mm2px(Vec(33.020000, 71.312965)), module, Bypass::LIGHT4));
-    addChild(createLightCentered<MuteLight<RetroLight>>(mm2px(Vec(33.020000, 82.047501)), module, Bypass::LIGHT5));
-    addChild(createLightCentered<MuteLight<RetroLight>>(mm2px(Vec(33.020000, 92.782021)), module, Bypass::LIGHT6));
-    addChild(createLightCentered<MuteLight<RetroLight>>(mm2px(Vec(33.020000, 103.516560)), module, Bypass::LIGHT7));
-    addChild(createLightCentered<MuteLight<RetroLight>>(mm2px(Vec(33.020000, 114.251080)), module, Bypass::LIGHT8));
+    addChild(createLightCentered<MuteLight<RetroLight>>(mm2px(Vec(32.953182, 65.945671)), module, Bypass::LIGHT3));
+    addChild(createLightCentered<MuteLight<RetroLight>>(mm2px(Vec(32.831013, 87.414726)), module, Bypass::LIGHT5));
+    addChild(createLightCentered<MuteLight<RetroLight>>(mm2px(Vec(32.831013, 108.883780)), module, Bypass::LIGHT7));
     /* END GENERATED: Add Components */
   }
 };
