@@ -79,6 +79,8 @@ struct Bypass : Module {
 	dsp::BooleanTrigger sendTrigger[NUM_PARAMS];
 
   void route(int input, int output, float multiplier = 1.0) {
+    assert(input < NUM_INPUTS);
+    assert(output < NUM_OUTPUTS);
     if (inputs[input].isConnected() && outputs[output].isConnected()) {
       int channels = inputs[input].getChannels();
       for (int c = 0; c < channels; c += 4) {
@@ -94,9 +96,11 @@ struct Bypass : Module {
   }
 
   void process(const ProcessArgs &args) override {
+    int NUM_RETURN_BUTTON_MAPPING = 8;
     int returnButtonMapping[8] = { 0, 1, 2, 2, 3, 3, 4, 4};
 
     for (int i = 0; i < NUM_PARAMS; i++) {
+      assert(BUTTON1 + i < NUM_PARAMS);
       if (sendTrigger[i].process(params[BUTTON1 + i].getValue() > 0.f))
         state[i] ^= true;
 
@@ -104,6 +108,8 @@ struct Bypass : Module {
     }
 
     for (int i = 0; i < 8; i++) {
+      assert(i < NUM_RETURN_BUTTON_MAPPING);
+      assert(returnButtonMapping[i] < NUM_PARAMS);
       if (state[returnButtonMapping[i]]) {
         if (i < 7) {
           route(IN1+i, SEND1+i);
@@ -111,7 +117,7 @@ struct Bypass : Module {
         route(RETURN1+i, OUT1+i);
       } else {
         if (i == 6) {
-          // Mono -> Stero case
+          // Mono -> Stereo case
           // 0.71 = sin(45deg)
           // This keeps overall combined power of output signal constant.
           route(IN1+i, OUT1+i, 0.71);
@@ -123,6 +129,7 @@ struct Bypass : Module {
         }
 
         // Clear send
+        assert(SEND1+i < NUM_OUTPUTS);
         if (outputs[SEND1+i].isConnected()) {
           outputs[SEND1+i].clearVoltages();
         }
@@ -130,17 +137,27 @@ struct Bypass : Module {
 
       int channels = 1;
       if (i < 7) {
+        assert(IN1+i < NUM_INPUTS);
+        assert(SEND1+i < NUM_OUTPUTS);
         channels = inputs[IN1+i].getChannels();
         outputs[SEND1+i].setChannels(channels);
       } else {
+        assert(IN1+6 < NUM_INPUTS);
+        assert(SEND1+6 < NUM_OUTPUTS);
+        // TODO: This probably wrong?
         channels = inputs[IN1+6].getChannels();
         outputs[SEND1+6].setChannels(channels);
       }
 
+      assert(i < NUM_RETURN_BUTTON_MAPPING);
+      assert(returnButtonMapping[i] < NUM_PARAMS);
       if (state[returnButtonMapping[i]]) {
+        assert(RETURN1+i < NUM_INPUTS);
+        assert(OUT1+i < NUM_OUTPUTS);
         channels = inputs[RETURN1+i].getChannels();
         outputs[OUT1+i].setChannels(channels);
       } else {
+        assert(OUT1+i < NUM_OUTPUTS);
         outputs[OUT1+i].setChannels(channels);
       }
     }
