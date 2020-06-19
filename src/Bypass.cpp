@@ -145,10 +145,7 @@ struct Bypass : Module {
         outputs[SEND1+i].setChannels(channels);
       } else {
         assert(IN1+6 < NUM_INPUTS);
-        assert(SEND1+6 < NUM_OUTPUTS);
-        // TODO: This probably wrong?
         channels = inputs[IN1+6].getChannels();
-        outputs[SEND1+6].setChannels(channels);
       }
 
       assert(i < NUM_RETURN_BUTTON_MAPPING);
