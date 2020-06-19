@@ -2,7 +2,7 @@
 
 # expects RELEASE_TAG and ASSET_PATH environment variables
 
-set -eu
+set -eux
 
 GITHUB_API_URL=https://api.github.com
 GITHUB_UPLOAD_URL=https://uploads.github.com

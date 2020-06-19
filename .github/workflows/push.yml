@@ -9,7 +9,7 @@ jobs:
     - name: Build Linux
       uses: ./.github/actions/build_linux
       env:
-        RACK_SDK_VERSION: 1.1.4
+        RACK_SDK_VERSION: 1.1.6
     - name: Tag Head as Latest
       uses: ./.github/actions/update_tag
       env:
@@ -19,7 +19,7 @@ jobs:
     - name: Upload Linux Release
       uses: ./.github/actions/update_asset
       env:
-        ASSET_PATH: dist/vitamin-1.0.0-lin.zip
+        ASSET_PATH: dist/vitamin-1.0.1-lin.zip
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         RELEASE_TAG: latest
   buildWindows:
@@ -30,7 +30,7 @@ jobs:
     - name: Build Windows
       uses: ./.github/actions/build_win
       env:
-        RACK_SDK_VERSION: 1.1.4
+        RACK_SDK_VERSION: 1.1.6
     - name: Tag Head as Latest
       uses: ./.github/actions/update_tag
       env:
@@ -40,7 +40,7 @@ jobs:
     - name: Upload Windows Release
       uses: ./.github/actions/update_asset
       env:
-        ASSET_PATH: dist/vitamin-1.0.0-win.zip
+        ASSET_PATH: dist/vitamin-1.0.1-win.zip
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         RELEASE_TAG: latest
 # TODO: This doesn't work :(
