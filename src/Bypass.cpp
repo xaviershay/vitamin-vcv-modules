@@ -128,10 +128,12 @@ struct Bypass : Module {
           route(IN1+i, OUT1+i);
         }
 
-        // Clear send
-        assert(SEND1+i < NUM_OUTPUTS);
-        if (outputs[SEND1+i].isConnected()) {
-          outputs[SEND1+i].clearVoltages();
+        // Clear send. Ignore i == 7 because handled by previous loop.
+        if (i < 7) {
+          assert(SEND1+i < NUM_OUTPUTS);
+          if (outputs[SEND1+i].isConnected()) {
+            outputs[SEND1+i].clearVoltages();
+          }
         }
       }
 
