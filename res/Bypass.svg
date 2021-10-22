@@ -17,7 +17,7 @@
    version="1.1"
    id="svg55117"
    sodipodi:docname="Bypass.svg"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
    style="enable-background:new">
   <defs
      id="defs55111">
@@ -1222,26 +1222,6 @@
        gradientTransform="translate(0,8.0744425e-6)" />
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient1310"
-       id="linearGradient1336"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(-0.1889881,69.774398)"
-       x1="30.388618"
-       y1="39.109337"
-       x2="35.651383"
-       y2="39.109337" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#Lighter_Brown"
-       id="linearGradient1338"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(-0.94517543,60.531179)"
-       x1="31.537806"
-       y1="48.352551"
-       x2="36.014568"
-       y2="48.352551" />
-    <linearGradient
-       inkscape:collect="always"
        xlink:href="#Retro_Brown"
        id="linearGradient1340"
        gradientUnits="userSpaceOnUse"
@@ -1348,9 +1328,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="157.36876"
-     inkscape:cy="227.27383"
+     inkscape:zoom="5.6"
+     inkscape:cx="141.51691"
+     inkscape:cy="93.272187"
      inkscape:document-units="mm"
      inkscape:current-layer="layer3"
      showgrid="false"
@@ -1360,9 +1340,9 @@
      fit-margin-bottom="0"
      inkscape:snap-bbox="true"
      inkscape:bbox-nodes="true"
-     inkscape:window-width="1853"
+     inkscape:window-width="1848"
      inkscape:window-height="1016"
-     inkscape:window-x="67"
+     inkscape:window-x="72"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
      showguides="false"
@@ -2417,14 +2397,14 @@
          style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.221;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     </g>
     <circle
-       style="fill:url(#linearGradient1336);fill-opacity:1;stroke:url(#linearGradient1338);stroke-width:0.78599995;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#fdf0c4;fill-opacity:1;stroke:#774836;stroke-width:0.3;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="LIGHT7"
        cx="32.831013"
        cy="108.88378"
        r="2.2383823"
        inkscape:label="LIGHT|MuteLight&lt;RetroLight&gt;" />
     <circle
-       style="display:inline;fill:#000000;fill-opacity:1;stroke:url(#linearGradient1340);stroke-width:0.38682988;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;enable-background:new"
+       style="display:inline;fill:#000000;fill-opacity:0;stroke:url(#linearGradient1340);stroke-width:0.38682988;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;enable-background:new"
        id="BUTTON7"
        cx="32.831013"
        cy="108.88378"

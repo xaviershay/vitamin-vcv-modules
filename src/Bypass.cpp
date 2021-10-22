@@ -139,7 +139,7 @@ struct Bypass : Module {
       assert(BUTTON1 + i < NUM_PARAMS);
       state[i] = params[BUTTON1 + i].getValue() > 0.f;
 
-      lights[LIGHT1+i].setBrightness(state[i] ? 0.9 : 0.0f);
+      lights[LIGHT1+i].setBrightness(state[i] ? 1.0 : 0.0f);
     }
 
     for (int i = 0; i < 8; i++) {
@@ -254,10 +254,15 @@ struct RetroLight : app::ModuleLightWidget {
 };
 
 struct RetroButton : app::SvgSwitch {
+	app::ModuleLightWidget* light;
+
   RetroButton() {
     momentary = false;
 		this->box.size = mm2px(Vec(4.f, 4.f));
     addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/LEDBezel.svg")));
+		light = new LEDBezelLight<RetroLight>;
+		light->box.pos = box.size.div(2).minus(light->box.size.div(2));
+		addChild(light);
   }
 };
 
@@ -272,11 +277,11 @@ struct BypassWidget : ModuleWidget {
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 30, 365)));
 
     /* START GENERATED - DO NOT EDIT: Add Components */
-    addParam(createParamCentered<RetroButton>(mm2px(Vec(33.020000, 39.109344)), module, Bypass::BUTTON1));
-    addParam(createParamCentered<RetroButton>(mm2px(Vec(33.020000, 49.843910)), module, Bypass::BUTTON2));
-    addParam(createParamCentered<RetroButton>(mm2px(Vec(32.953182, 65.945671)), module, Bypass::BUTTON3));
-    addParam(createParamCentered<RetroButton>(mm2px(Vec(32.831013, 87.414726)), module, Bypass::BUTTON5));
-    addParam(createParamCentered<RetroButton>(mm2px(Vec(32.831013, 108.883780)), module, Bypass::BUTTON7));
+    addParam(createLightParamCentered<RetroButton>(mm2px(Vec(33.020000, 39.109344)), module, Bypass::BUTTON1, Bypass::LIGHT1));
+    addParam(createLightParamCentered<RetroButton>(mm2px(Vec(33.020000, 49.843910)), module, Bypass::BUTTON2, Bypass::LIGHT2));
+    addParam(createLightParamCentered<RetroButton>(mm2px(Vec(32.953182, 65.945671)), module, Bypass::BUTTON3, Bypass::LIGHT3));
+    addParam(createLightParamCentered<RetroButton>(mm2px(Vec(32.831013, 87.414726)), module, Bypass::BUTTON5, Bypass::LIGHT5));
+    addParam(createLightParamCentered<RetroButton>(mm2px(Vec(32.831013, 108.883780)), module, Bypass::BUTTON7, Bypass::LIGHT7));
     addInput(createInputCentered<PJ301MPort>(mm2px(Vec(6.237754, 39.109362)), module, Bypass::IN1));
     addInput(createInputCentered<PJ301MPort>(mm2px(Vec(6.237754, 49.843886)), module, Bypass::IN2));
     addInput(createInputCentered<PJ301MPort>(mm2px(Vec(6.237754, 60.578420)), module, Bypass::IN3));
@@ -307,11 +312,6 @@ struct BypassWidget : ModuleWidget {
     addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(19.939704, 82.047476)), module, Bypass::SEND5));
     addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(19.939704, 92.782001)), module, Bypass::SEND6));
     addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(19.939704, 103.516534)), module, Bypass::SEND7));
-    addChild(createLightCentered<MuteLight<RetroLight>>(mm2px(Vec(33.020000, 39.109344)), module, Bypass::LIGHT1));
-    addChild(createLightCentered<MuteLight<RetroLight>>(mm2px(Vec(33.020000, 49.843910)), module, Bypass::LIGHT2));
-    addChild(createLightCentered<MuteLight<RetroLight>>(mm2px(Vec(32.953182, 65.945671)), module, Bypass::LIGHT3));
-    addChild(createLightCentered<MuteLight<RetroLight>>(mm2px(Vec(32.831013, 87.414726)), module, Bypass::LIGHT5));
-    addChild(createLightCentered<MuteLight<RetroLight>>(mm2px(Vec(32.831013, 108.883780)), module, Bypass::LIGHT7));
     /* END GENERATED: Add Components */
   }
 };
