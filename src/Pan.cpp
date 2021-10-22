@@ -31,6 +31,7 @@ struct Pan : Module {
     configInput(CV_INPUT, "CV");
     configOutput(LEFT_OUTPUT, "L");
     configOutput(RIGHT_OUTPUT, "R");
+    configBypass(IN_INPUT, LEFT_OUTPUT);
 	}
 
 	void process(const ProcessArgs &args) override {

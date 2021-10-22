@@ -102,6 +102,13 @@ struct Bypass : Module {
     configOutput(OUT6, "#4 R");
     configOutput(OUT7, "#5 L");
     configOutput(OUT8, "#5 R");
+    configBypass(IN1, OUT1);
+    configBypass(IN2, OUT2);
+    configBypass(IN3, OUT3);
+    configBypass(IN4, OUT4);
+    configBypass(IN5, OUT5);
+    configBypass(IN6, OUT6);
+    configBypass(IN7, OUT7);
     onReset();
   }
 
