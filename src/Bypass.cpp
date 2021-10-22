@@ -66,12 +66,42 @@ struct Bypass : Module {
   Bypass() {
     config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
     /* START GENERATED - PARAMS EDITABLE: Param Config */
-    configParam(BUTTON1, 0.f, 1.f, 0.f, "Channel 1 Send");
-    configParam(BUTTON2, 0.f, 1.f, 0.f, "Channel 2 Send");
-    configParam(BUTTON3, 0.f, 1.f, 0.f, "Channel 3 Send");
-    configParam(BUTTON5, 0.f, 1.f, 0.f, "Channel 5 Send");
-    configParam(BUTTON7, 0.f, 1.f, 0.f, "Channel 7 Send");
+    configSwitch(BUTTON1, 0.f, 1.f, 0.f, "#1", {"Bypass", "Send"});
+    configSwitch(BUTTON2, 0.f, 1.f, 0.f, "#2", {"Bypass", "Send"});
+    configSwitch(BUTTON3, 0.f, 1.f, 0.f, "#3", {"Bypass", "Send"});
+    configSwitch(BUTTON5, 0.f, 1.f, 0.f, "#4", {"Bypass", "Send"});
+    configSwitch(BUTTON7, 0.f, 1.f, 0.f, "#5", {"Bypass", "Send"});
     /* END GENERATED: Param Config */
+    configInput(IN1, "#1");
+    configInput(IN2, "#2");
+    configInput(IN3, "#3 L");
+    configInput(IN4, "#3 R");
+    configInput(IN5, "#4 L");
+    configInput(IN6, "#4 R");
+    configInput(IN7, "#5");
+    configOutput(SEND1, "#1");
+    configOutput(SEND2, "#2");
+    configOutput(SEND3, "#3 L");
+    configOutput(SEND4, "#3 R");
+    configOutput(SEND5, "#4 L");
+    configOutput(SEND6, "#4 R");
+    configOutput(SEND7, "#5");
+    configInput(RETURN1, "#1 return");
+    configInput(RETURN2, "#2 return");
+    configInput(RETURN3, "#3 L return");
+    configInput(RETURN4, "#3 R return");
+    configInput(RETURN5, "#4 L return");
+    configInput(RETURN6, "#4 R return");
+    configInput(RETURN7, "#5 L return");
+    configInput(RETURN8, "#5 R return");
+    configOutput(OUT1, "#1");
+    configOutput(OUT2, "#2");
+    configOutput(OUT3, "#3 L");
+    configOutput(OUT4, "#3 R");
+    configOutput(OUT5, "#4 L");
+    configOutput(OUT6, "#4 R");
+    configOutput(OUT7, "#5 L");
+    configOutput(OUT8, "#5 R");
     onReset();
   }
 
