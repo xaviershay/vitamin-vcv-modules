@@ -113,7 +113,6 @@ struct Bypass : Module {
   }
 
 	bool state[NUM_PARAMS];
-	dsp::BooleanTrigger sendTrigger[NUM_PARAMS];
 
   void route(int input, int output, float multiplier = 1.0) {
     assert(input < NUM_INPUTS);
@@ -138,8 +137,7 @@ struct Bypass : Module {
 
     for (int i = 0; i < NUM_PARAMS; i++) {
       assert(BUTTON1 + i < NUM_PARAMS);
-      if (sendTrigger[i].process(params[BUTTON1 + i].getValue() > 0.f))
-        state[i] ^= true;
+      state[i] = params[BUTTON1 + i].getValue() > 0.f;
 
       lights[LIGHT1+i].setBrightness(state[i] ? 0.9 : 0.0f);
     }
@@ -257,7 +255,7 @@ struct RetroLight : app::ModuleLightWidget {
 
 struct RetroButton : app::SvgSwitch {
   RetroButton() {
-    momentary = true;
+    momentary = false;
 		this->box.size = mm2px(Vec(4.f, 4.f));
     addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/LEDBezel.svg")));
   }
