@@ -264,6 +264,7 @@ struct RetroButton : app::SvgSwitch {
 		light->box.pos = box.size.div(2).minus(light->box.size.div(2));
 		addChild(light);
   }
+  app::ModuleLightWidget* getLight() { return light; }
 };
 
 struct BypassWidget : ModuleWidget {
