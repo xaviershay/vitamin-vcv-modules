@@ -11,12 +11,14 @@ jobs:
       env:
         RACK_SDK_VERSION: 2.0.3
     - name: Tag Head as Latest
+      if: ${{ github.ref == 'refs/heads/main' }}
       uses: ./.github/actions/update_tag
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         REF: refs/heads/main
         TAG: latest
     - name: Upload Linux Release
+      if: ${{ github.ref == 'refs/heads/main' }}
       uses: ./.github/actions/update_asset
       env:
         ASSET_PATH: dist/vitamin-2.0.1-lin.zip
@@ -32,12 +34,14 @@ jobs:
       env:
         RACK_SDK_VERSION: 2.0.3
     - name: Tag Head as Latest
+      if: ${{ github.ref == 'refs/heads/main' }}
       uses: ./.github/actions/update_tag
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         REF: refs/heads/main
         TAG: latest
     - name: Upload Windows Release
+      if: ${{ github.ref == 'refs/heads/main' }}
       uses: ./.github/actions/update_asset
       env:
         ASSET_PATH: dist/vitamin-2.0.1-win.zip
