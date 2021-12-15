@@ -61,7 +61,7 @@ class Param < Component
   end
 
   def to_config_cpp
-    %|configParam(%s, 0.f, 1.f, 0.f, "");| % name
+    %|configSwitch(%s, 0.f, 1.f, 0.f, "", {"Bypass", "Send"});| % name
   end
 
   def self.namespace; "PARAM"; end

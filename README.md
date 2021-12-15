@@ -30,7 +30,8 @@ full range of control either:
 # Development
 
     export RACK_DIR=../path/to/Rack-SDK
-    ruby create_module.rb Bypass # Update CPP from SVG. Better than helper.py.
+    ruby create_module.rb Pan # Update CPP from SVG. Better than helper.py.
+    # WARNING: Bypass module diverged from generated during V2 upgrade.
     make && make install
 
 Font is lakmus.

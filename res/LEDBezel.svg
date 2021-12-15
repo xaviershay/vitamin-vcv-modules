@@ -14,7 +14,7 @@
    viewBox="0 0 5.5 5.5"
    version="1.1"
    id="svg64581"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
    sodipodi:docname="LEDBezel.svg">
   <defs
      id="defs64575" />
@@ -26,7 +26,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="15.839192"
-     inkscape:cx="7.0346157"
+     inkscape:cx="-15.504413"
      inkscape:cy="8.3591324"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
@@ -35,9 +35,9 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="1853"
+     inkscape:window-width="1848"
      inkscape:window-height="1016"
-     inkscape:window-x="67"
+     inkscape:window-x="72"
      inkscape:window-y="27"
      inkscape:window-maximized="0">
     <inkscape:grid
@@ -52,7 +52,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -70,6 +70,6 @@
        inkscape:connector-curvature="0"
        id="path64013"
        d="m 98.006433,123.60326 c -1.135353,-0.41193 -2.391289,0.17282 -2.804251,1.3072 -0.411957,1.13535 0.172824,2.39029 1.308177,2.80224 1.135379,0.41397 2.389308,-0.17081 2.803272,-1.30617 0.411937,-1.13437 -0.171817,-2.39031 -1.307198,-2.80327"
-       style="clip-rule:nonzero;fill:#774836;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.25721639" />
+       style="clip-rule:nonzero;fill:#fdf0c4;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.25721639" />
   </g>
 </svg>

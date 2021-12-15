@@ -27,6 +27,11 @@ struct Pan : Module {
 	Pan() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(PAN_PARAM, -5.f, 5.f, 0.f, "L/R Pan", "%", 0, 20);
+    configInput(IN_INPUT, "Line");
+    configInput(CV_INPUT, "CV");
+    configOutput(LEFT_OUTPUT, "L");
+    configOutput(RIGHT_OUTPUT, "R");
+    configBypass(IN_INPUT, LEFT_OUTPUT);
 	}
 
 	void process(const ProcessArgs &args) override {
