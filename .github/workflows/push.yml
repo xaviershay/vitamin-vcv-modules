@@ -5,7 +5,7 @@ jobs:
     name: Build Linux
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@main
     - name: Build Linux
       uses: ./.github/actions/build_linux
       env:
@@ -14,7 +14,7 @@ jobs:
       uses: ./.github/actions/update_tag
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        REF: refs/heads/master
+        REF: refs/heads/main
         TAG: latest
     - name: Upload Linux Release
       uses: ./.github/actions/update_asset
@@ -26,7 +26,7 @@ jobs:
     name: Build Windows
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@main
     - name: Build Windows
       uses: ./.github/actions/build_win
       env:
@@ -35,7 +35,7 @@ jobs:
       uses: ./.github/actions/update_tag
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        REF: refs/heads/master
+        REF: refs/heads/main
         TAG: latest
     - name: Upload Windows Release
       uses: ./.github/actions/update_asset
@@ -48,7 +48,7 @@ jobs:
 #    name: Build OSX
 #    runs-on: ubuntu-latest
 #    steps:
-#    - uses: actions/checkout@master
+#    - uses: actions/checkout@main
 #    - name: Build OSX
 #      uses: ./.github/actions/build_osx
 #      env:
@@ -57,7 +57,7 @@ jobs:
 #      uses: ./.github/actions/update_tag
 #      env:
 #        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        REF: refs/heads/master
+#        REF: refs/heads/main
 #        TAG: latest
 #    - name: Upload OSX Release
 #      uses: ./.github/actions/update_asset

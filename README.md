@@ -12,7 +12,7 @@ Features two mono lines, two stereo lines, and a single mono-to-stereo line.
 The mono-to-stereo line performs a constant power center pan to the outputs
 when bypassing, to maintain constant apparent volume.
 
-![Vitamin B Screenshot](https://raw.githubusercontent.com/xaviershay/vcv-modules/master/images/vitamin-b.png)
+![Vitamin B Screenshot](https://raw.githubusercontent.com/xaviershay/vcv-modules/main/images/vitamin-b.png)
 
 ## Vitamin P (Pan)
 
@@ -25,7 +25,7 @@ full range of control either:
 * set the knob to left position with a unipolar input 0V to 10V.
 * set the knob to middle position with a bipolar input -5V to 5V.
 
-![Vitamin P Screenshot](https://raw.githubusercontent.com/xaviershay/vcv-modules/master/images/vitamin-p.png)
+![Vitamin P Screenshot](https://raw.githubusercontent.com/xaviershay/vcv-modules/main/images/vitamin-p.png)
 
 # Development
 
